@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Résultats des Modèles</title>
+</head>
+<body>
+    <h1>Résultats des Modèles</h1>
+    
+    <p>Modèles entrainés</p>
+    <ul>
+    {% for model_info in models_trained %}
+        <li>Modèle : {{ model_info.model }} | Prétraitement : {{ model_info.preprocessing }}</li>
+    {% endfor %}
+    </ul>
+
+    <form action="{{ url_for('routes.recommend') }}" method="post">
+        <label for="user_input">Entrez votre texte :</label>
+        <textarea name="user_input" id="user_input" rows="4" cols="50"></textarea>
+        <br>
+        <input type="submit" value="Recommander">
+    </form>
+
+    <h1>Recommended Resources</h1>
+    {% if all_recommendations %}
+        {% for model_name, model_recommendations in all_recommendations.items() %}
+            <h2>Recommendations for {{ model_name }}</h2>
+            <ul>
+                {% for resource in model_recommendations.itertuples() %}
+                    <li><a href="{{ resource.url }}" target="_blank">{{ resource.title }}</a> ({{ resource.category }})</li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endif %}
+    <a href="{{ url_for('routes.index') }}">Go Back</a>
+</body>
+</html>

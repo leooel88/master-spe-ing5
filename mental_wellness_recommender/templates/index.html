@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+</head>
+<body>
+    <h1>Bienvenue à la page d'accueil</h1>
+    
+    <form action="{{ url_for('routes.train') }}" method="post">
+        <label for="model1">Choisissez un modèle :</label>
+        <select name="model1" id="model1">
+            <option value="knn">Knn</option>
+            <option value="svc">SVC</option>
+            <option value="tfidf">TF-IDF</option>
+            <option value="word2vec">Word 2 Vec</option>
+            <option value="dov2vec">Doc 2 Vec</option>
+        </select>
+        <br>
+
+        <label for="preprocessing1">Choisissez un système de prétraitement :</label>
+        <select name="preprocessing1" id="preprocessing1">
+            <option value="none">Aucun</option>
+            <option value="preprocessing1">Preprocessing1</option>
+            <option value="preprocessing2">Preprocessing2</option>
+        </select>
+        <br>
+
+        <input type="submit" value="Entraîner">
+    </form>
+
+    <button type="button" onclick="addModelConfig()">Ajouter une autre configuration</button>
+</body>
+<script>
+    let modelCount = 1;
+
+    function addModelConfig() {
+        modelCount++;
+
+        const configDiv = document.createElement("div");
+        configDiv.setAttribute("id", `modelConfig${modelCount}`);
+        
+        // Clone model selection
+        const modelLabel = document.createElement("label");
+        modelLabel.setAttribute("for", `model${modelCount}`);
+        modelLabel.textContent = "Choisissez un modèle :";
+        const modelSelect = document.querySelector("#model1").cloneNode(true);
+        modelSelect.setAttribute("name", `model${modelCount}`);
+        modelSelect.setAttribute("id", `model${modelCount}`);
+        
+        // Clone preprocessing selection
+        const preLabel = document.createElement("label");
+        preLabel.setAttribute("for", `preprocessing${modelCount}`);
+        preLabel.textContent = "Choisissez un système de prétraitement :";
+        const preSelect = document.querySelector("#preprocessing1").cloneNode(true);
+        preSelect.setAttribute("name", `preprocessing${modelCount}`);
+        preSelect.setAttribute("id", `preprocessing${modelCount}`);
+        
+        configDiv.appendChild(modelLabel);
+        configDiv.appendChild(modelSelect);
+        configDiv.appendChild(document.createElement("br"));
+        configDiv.appendChild(preLabel);
+        configDiv.appendChild(preSelect);
+        configDiv.appendChild(document.createElement("br"));
+
+        document.querySelector("form").insertBefore(configDiv, document.querySelector("input[type='submit']"));
+    }
+</script>
+</html>
